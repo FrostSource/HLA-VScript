@@ -1,0 +1,967 @@
+---@meta
+
+--#region Game Events
+
+---
+---All game events specific to HLVR
+---
+---@alias GameEventsHLVR
+---**item (string)** *Item classname.*
+---
+---**item_name (string)** *Item targetname.*
+---
+---**wasparentedto (string)** *Unknown.*
+---
+---**vr_tip_attachment (number)** *Hand that grabbed, 1 = left, 2 = right (reversed if left handed).*
+---
+---**otherhand_vr_tip_attachment (number)** *Other hand that grabbed.*
+---
+---**controller_type (number)** *Type of controller used (see EnumControllerTypes).*
+---| "\"item_pickup\"" # Player grabs an object with hand.
+---**item (string)** *Item classname.*
+---
+---**item_name (string)** *Item targetname.*
+---
+---**vr_tip_attachment (number)** *Hand that grabbed, 1 = left, 2 = right (reversed if left handed).*
+---| "\"item_released\"" # Player drops an object from hand.
+---| "\"item_attachments\"" # Unknown.
+---Player switches weapon.
+---
+---**item (string)** *Weapon class 'hand_use_controller', 'hlvr_weapon_energygun', 'hlvr_weapon_rapidfire', 'hlvr_weapon_shotgun', 'hlvr_multitool'.*
+---| "\"weapon_switch\""
+---| "\"grabbity_glove_pull\"" # Player pulls object with glove.
+---| "\"grabbity_glove_catch\"" # Player grabs an object after pulling it with glove.
+---| "\"grabbity_glove_highlight_start\"" # Grabbity glove starts highlighting an object.
+---| "\"grabbity_glove_highlight_stop\"" # Grabbity glove stops highlighting an object.
+---| "\"grabbity_glove_locked_on_start\"" # Player locks onto object with glove.
+---| "\"grabbity_glove_locked_on_stop\"" # Player stops locking onto object with glove.
+---| "\"player_gestured\"" # Player gestures with hand.
+---| "\"player_shoot_weapon\"" # Player shot any weapon.
+---| "\"player_teleport_start\"" # Player starts the teleporting process (when button is held or released?).
+---| "\"player_teleport_finish\"" # Player finishes the teleporting process.
+---| "\"player_picked_up_weapon_off_hand\"" # Player grabs usable weapon with non-dominant hand.
+---| "\"player_picked_up_weapon_off_hand_crafting\"" # Player grabs weapon with non-dominant hand from crafting cradle.
+---| "\"player_eject_clip\"" # Player ejects the magazine from the pistol.
+---| "\"player_armed_grenade\"" # Player arms any(?) grenade.
+---| "\"player_health_pen_prepare\"" # Player reveals a health pen needle.
+---| "\"player_health_pen_retract\"" # Player retracts a health pen needle.
+---| "\"player_health_pen_used\"" # Player injects a health pen.
+---| "\"player_pistol_empty_clip\"" #
+---| "\"player_pistol_clip_inserted\"" #
+---| "\"player_pistol_empty_chamber\"" #
+---| "\"player_pistol_chambered_round\"" #
+---| "\"player_pistol_slide_lock\"" #
+---| "\"player_pistol_bought_lasersight\"" #
+---| "\"player_pistol_toggle_lasersight\"" #
+---| "\"player_pistol_bought_burstfire\"" #
+---| "\"player_pistol_toggle_burstfire\"" #
+---| "\"player_pistol_pickedup_charged_clip\"" #
+---| "\"player_pistol_armed_charged_clip\"" #
+---| "\"player_pistol_clip_charge_ended\"" #
+---Player grabs weapon ammo from backpack. This does not have any key to determine ammo type.
+---Use weapon_switch event to track held weapon to determine ammo type retrieved.
+---Fires *before* item_pickup event.
+---| "\"player_retrieved_backpack_clip\""
+---Player stores any ammo type in backpack.
+---
+---**ammotype (string)** *Name of ammo type 'Pistol', 'SMG1', 'Buckshot', 'AlyxGun'.*
+---Sometimes for some reason the key is `ammoType` (capital T), seems to happen when shotgun shell is taken from backpack and put back.
+---| "\"player_drop_ammo_in_backpack\""
+---| "\"player_drop_resin_in_backpack\"" # Player stores resin in backpack.
+---| "\"player_using_healthstation\"" #
+---| "\"health_station_open\"" #
+---| "\"player_looking_at_wristhud\"" #
+---| "\"player_shotgun_shell_loaded\"" #
+---| "\"player_shotgun_state_changed\"" #
+---| "\"player_shotgun_upgrade_grenade_launcher_state\"" #
+---| "\"player_shotgun_autoloader_state\"" #
+---| "\"player_shotgun_autoloader_shells_added\"" #
+---| "\"player_shotgun_upgrade_quickfire\"" #
+---| "\"player_shotgun_is_ready\"" #
+---| "\"player_shotgun_open\"" #
+---| "\"player_shotgun_loaded_shells\"" #
+---| "\"player_shotgun_upgrade_grenade_long\"" #
+---| "\"player_rapidfire_capsule_chamber_empty\"" #
+---| "\"player_rapidfire_cycled_capsule\"" #
+---| "\"player_rapidfire_magazine_empty\"" #
+---| "\"player_rapidfire_opened_casing\"" #
+---| "\"player_rapidfire_closed_casing\"" #
+---| "\"player_rapidfire_inserted_capsule_in_chamber\"" #
+---| "\"player_rapidfire_inserted_capsule_in_magazine\"" #
+---| "\"player_rapidfire_upgrade_selector_can_use\"" #
+---| "\"player_rapidfire_upgrade_selector_used\"" #
+---| "\"player_rapidfire_upgrade_can_charge\"" #
+---| "\"player_rapidfire_upgrade_can_not_charge\"" #
+---| "\"player_rapidfire_upgrade_fully_charged\"" #
+---| "\"player_rapidfire_upgrade_not_fully_charged\"" #
+---| "\"player_rapidfire_upgrade_fired\"" #
+---| "\"player_rapidfire_energy_ball_can_charge\"" #
+---| "\"player_rapidfire_energy_ball_fully_charged\"" #
+---| "\"player_rapidfire_energy_ball_not_fully_charged\"" #
+---| "\"player_rapidfire_energy_ball_can_pick_up\"" #
+---| "\"player_rapidfire_energy_balls_picked_up\"" #
+---| "\"player_rapidfire_stun_grenade_ready\"" #
+---| "\"player_rapidfire_stun_grenade_not_ready\"" #
+---| "\"player_rapidfire_stun_grenade_picked_up\"" #
+---| "\"player_rapidfire_explode_button_ready\"" #
+---| "\"player_rapidfire_explode_button_not_ready\"" #
+---| "\"player_rapidfire_explode_button_pressed\"" #
+---| "\"game_saved\"" # Game saves (does this trigger on autosaves?)
+---| "\"player_attempted_invalid_storage\"" # Player tried to store arbitrary prop in backpack (does this fire for clips too?)
+---| "\"player_attempted_invalid_pistol_clip_storage\"" # Player tried to store pistol magazine in backpack.
+---| "\"opened_weapon_switch\"" # Player opened the weapon switch menu.
+---| "\"player_started_2h_levitate\"" # is this ladders?
+---Player put item in wrist pocket. Fires just after item_released.
+---
+---**item (string)** *Item classname.*
+---
+---**item_name (string)** *Item targetname.*
+---| "\"player_stored_item_in_itemholder\""
+---Player took item from wrist pocket. Fires just after item_pickup event.
+---
+---**item (string)** *Item classname.*
+---
+---**item_name (string)** *Item targetname.*
+---
+---**vr_tip_attachment (number)** *Hand that grabbed, 1 = left, 2 = right (reversed if left handed).*
+---| "\"player_removed_item_from_itemholder\""
+---| "\"player_picked_up_flashlight\"" #
+---| "\"player_picked_up_flashlight_single_controller\"" #
+---| "\"player_attached_flashlight\"" #
+---| "\"two_hand_pistol_grab_start\"" #
+---| "\"two_hand_pistol_grab_end\"" #
+---| "\"two_hand_rapidfire_grab_start\"" #
+---| "\"two_hand_rapidfire_grab_end\"" #
+---| "\"two_hand_shotgun_grab_start\"" #
+---| "\"two_hand_shotgun_grab_end\"" #
+---| "\"health_pen_teach_storage\"" # what happens if you trigger these?
+---| "\"health_vial_teach_storage\"" #
+---| "\"player_opened_game_menu\"" # does this fire for client or server?
+---| "\"player_closed_game_menu\"" #
+---| "\"player_pickedup_storable_clip\"" #
+---| "\"player_pickedup_insertable_clip\"" #
+---| "\"player_covered_mouth\"" #
+---| "\"player_upgrade_weapon\"" #
+---| "\"soldier_killed_by_gastank_explosion\"" #
+---| "\"charger_killed_while_shield_up\"" #
+---| "\"steal_xen_grenade\"" #
+---| "\"tripmine_hack_started\"" #
+---| "\"tripmine_hacked\"" #
+---is_primary_left (number)
+---| "\"primary_hand_changed\""
+---| "\"close_to_blindzombie\"" #
+---| "\"player_grabbed_by_barnacle\"" #
+---| "\"player_released_by_barnacle\"" #
+---| "\"single_controller_mode_changed\"" #
+---| "\"movement_hand_changed\"" #
+---| "\"npc_ragdoll_created\"" # Fired when an npc is killed and transitioning to ragdoll.
+---| "\"friendly_npc_spawned\"" #
+---| "\"combine_tank_moved_by_player\"" #
+---| "\"change_level_activated\"" #
+---| "\"save_game_loaded\"" #
+---| "\"player_quick_turned\"" #
+---| "\"game_option_changed\"" #
+---| "\"barnacle_grabbed_zombie\"" # test headcrab and combine
+---| "\"barnacle_grabbed_grenade\"" #
+---| "\"barnacle_killed_by_grenade\"" #
+---| "\"zombie_killed_by_grenade\"" #
+---| "\"player_continuous_jump_finish\"" #
+---| "\"player_continuous_mantle_finish\"" #
+---| "\"player_crouch_toggle_finish\"" #
+---| "\"player_stand_toggle_finish\"" #
+---| "\"player_grabbed_ladder\"" #
+---| "\"commentary_started\"" #
+---| "\"commentary_stopped\"" #
+---| "\"vr_controller_hint_create\"" #
+
+---
+---All game events unspecific to HLVR, which exist in any Source games.
+---
+---Many of these will not work in HLVR.
+---
+---@alias GameEventsCore
+---| "\"server_spawn\"" # As soon as a server starts.
+---| "\"server_pre_shutdown\"" # Server is about to be shut down.
+---| "\"server_shutdown\"" # Server shut down.
+---| "\"server_message\"" # A generic server message.
+---| "\"server_cvar\"" # A server console var has changed.
+---| "\"server_addban\"" #
+---| "\"server_removeban\"" #
+---| "\"player_activate\"" #
+---| "\"player_connect_full\"" # Player has sent final message in the connection sequence.
+---| "\"player_say\"" #
+---| "\"player_full_update\"" #
+---| "\"player_connect\"" # A new client connected.
+---| "\"player_disconnect\"" # A client was disconnected.
+---| "\"player_info\"" # A player changed his name.
+---| "\"player_spawn\"" # Player spawned in game.
+---| "\"player_team\"" # Player change his team.
+---| "\"local_player_team\"" # Sent only on the clientfor the local player - happens only after the local players team variable has been updated.
+---| "\"player_changename\"" #
+---| "\"player_class\"" # A player changed his class.
+---| "\"player_score\"" # Players score changed.
+---| "\"player_hurt\"" #
+---| "\"player_shoot\"" # Player shoot his weapon.
+---| "\"player_chat\"" # A public player chat.
+---| "\"teamplay_broadcast_audio\"" # Emits a sound to everyone on a team.
+---| "\"finale_start\"" #
+---| "\"player_stats_updated\"" #
+---| "\"user_data_downloaded\"" # Fired when achievements/stats are downloaded from Steam or XBox Live.
+---| "\"ragdoll_dissolved\"" #
+---| "\"team_info\"" # Info about team.
+---| "\"team_score\"" # Team score changed.
+---| "\"hltv_cameraman\"" # A spectator/player is a cameraman.
+---| "\"hltv_chase\"" # Shot of a single entity.
+---| "\"hltv_rank_camera\"" # A camera ranking.
+---| "\"hltv_rank_entity\"" # An entity ranking.
+---| "\"hltv_fixed\"" # Show from fixed view.
+---| "\"hltv_message\"" # A HLTV message send by moderators.
+---| "\"hltv_statis\"" # General HLTV status.
+---| "\"hltv_title\"" #
+---| "\"hltv_chat\"" # A HLTV chat msg sent by spectators.
+---| "\"hltv_versioninfo\"" #
+---| "\"demo_start\"" #
+---| "\"demo_stop\"" #
+---| "\"demo_skip\"" #
+---| "\"map_shutdown\"" #
+---| "\"map_transition\"" #
+---| "\"hostname_changed\"" #
+---| "\"difficulty_changed\"" #
+---| "\"game_message\"" # A message send by game logic to everyone.
+---| "\"game_newmap\"" # Send when new map is completely loaded.
+---| "\"round_start\"" #
+---| "\"round_end\"" #
+---| "\"round_start_pre_entity\"" #
+---| "\"round_start_post_nav\"" #
+---| "\"round_freeze_end\"" #
+---| "\"teamplay_round_start\"" # Round restart.
+---| "\"player_death\"" #
+---| "\"player_footstep\"" #
+---| "\"player_hintmessage\"" #
+---| "\"beak_breakable\"" #
+---| "\"break_prop\"" #
+---| "\"entity_killed\"" #
+---| "\"door_open\"" #
+---| "\"door_close\"" #
+---| "\"door_unlocked\"" #
+---| "\"vote_started\"" #
+---| "\"vote_failed\"" #
+---| "\"vote_passed\"" #
+---| "\"vote_changed\"" #
+---| "\"vote_cast_yes\"" #
+---| "\"vote_cast_no\"" #
+---| "\"achievement_event\"" #
+---| "\"achievement_earned\"" #
+---| "\"achievement_write_failed\"" # Used for a notification message when an achievement fails to write.
+---| "\"bonus_updated\"" #
+---| "\"spec_target_updated\"" #
+---| "\"entity_visible\"" #
+---| "\"player_use_miss\"" # The player pressed use but a use entity wasn't found.
+---| "\"gameinstructor_draw\"" #
+---| "\"gameinstructor_nodraw\"" #
+---| "\"flare_ignite_npc\"" #
+---| "\"helicopter_grenade_punt_miss\"" #
+---| "\"physgun_pickup\"" #
+---| "\"inventory_updated\"" #
+---| "\"cart_updated\"" #
+---| "\"store_pricesheet_updated\"" #
+---| "\"item_schema_initialized\"" #
+---| "\"drop_rate_modified\"" #
+---| "\"event_ticket_modified\"" #
+---| "\"gc_connected\"" #
+---| "\"instructor_start_lesson\"" # see if this can create better entity hints
+---| "\"instructor_close_lesson\"" #
+---| "\"instructor_server_hint_create\"" # Create a hint using data supplied by the server/map. Intended for hints to smooth playtests before content is ready to make the hint unneccessary. NOT INTENDED AS A SHIPPABLE CRUTCH.
+---| "\"instructor_server_hint_stop\"" # Destroys a server/map created hint.
+---| "\"set_instructor_group_enabled\"" #
+---| "\"clientside_lesson_closed\"" #
+---| "\"dynamic_shadow_light_changed\"" #
+
+---@alias GameEventsAll GameEventsHLVR | GameEventsCore
+
+--#endregion
+
+--#region Game event tables
+
+---@class GameEventBase
+---@field game_event_name string
+---@field game_event_listener integer
+---@field splitscreenplayer integer
+
+---@class GameEventItemPickup : GameEventBase
+    ---@field item string # Item classname.
+    ---@field item_name string # Item targetname.
+    ---@field wasparentedto string # Unknown if class or targetname.
+    ---@field vr_tip_attachment 1|2 # Hand that grabbed, 1 = left, 2 = right (reversed if left handed).
+    ---@field otherhand_vr_tip_attachment 1|2 # Other hand that grabbed.
+    ---@field controller_type number # Unknown
+---@class GameEventItemReleased : GameEventBase
+    ---@field item string # Item classname.
+    ---@field item_name string # Item targetname.
+    ---@field vr_tip_attachment 1|2 # Hand that grabbed, 1 = left, 2 = right (reversed if left handed).
+---@class GameEventItemAttachment : GameEventBase
+    ---@field item string
+---@class GameEventWeaponSwitch : GameEventBase
+    ---@field item "hand_use_controller"|"hlvr_weapon_energygun"|"hlvr_weapon_rapidfire"|"hlvr_weapon_shotgun"|"hlvr_multitool"|"hlvr_weapon_generic_pistol"
+---@class GameEventGrabbityGlovePull : GameEventBase
+    ---@field item string
+    ---@field item_name string
+    ---@field entindex integer
+    ---@field hand_is_primary number
+    ---@field vr_tip_attachment integer
+    ---@field wasparentedto string
+---@class GameEventGrabbityGloveCatch : GameEventBase
+    ---@field entindex integer
+    ---@field item string
+    ---@field hand_is_primary number
+    ---@field vr_tip_attachment integer
+---@class GameEventGrabbityGloveHighlightStart : GameEventBase
+    ---@field entindex integer
+    ---@field hand_is_primary number
+    ---@field vr_tip_attachment 1|2 # Hand that grabbed, 1 = left, 2 = right (reversed if left handed).
+---@class GameEventGrabbityGloveHighlightStop : GameEventGrabbityGloveHighlightStart, GameEventBase
+    ---@field entindex integer
+    ---@field hand_is_primary number
+    ---@field vr_tip_attachment 1|2 # Hand that grabbed, 1 = left, 2 = right (reversed if left handed).
+---@class GameEventGrabbityGloveLockedOnStart : GameEventGrabbityGloveHighlightStart, GameEventBase
+    ---@field entindex integer
+    ---@field hand_is_primary number
+    ---@field vr_tip_attachment 1|2 # Hand that grabbed, 1 = left, 2 = right (reversed if left handed).
+---@class GameEventGrabbityGloveLockedOnStop : GameEventGrabbityGloveHighlightStart, GameEventBase
+    ---@field entindex integer
+    ---@field hand_is_primary number
+    ---@field vr_tip_attachment 1|2 # Hand that grabbed, 1 = left, 2 = right (reversed if left handed).
+    ---@field highlight_active number
+---@class GameEventPlayerGestured : GameEventBase
+    ---@field item string
+---@class GameEventPlayerShootWeapon : GameEventBase
+---@class GameEventPlayerTeleportStart : GameEventBase
+    ---@field positionX number
+    ---@field positionY number
+    ---@field positionZ number
+    ---@field map_name string
+---@class GameEventPlayerTeleportFinish : GameEventPlayerTeleportStart, GameEventBase
+---@class GameEventPlayerPickedUpWeaponOffHand : GameEventBase
+    ---@field picked_up integer
+---@class GameEventPlayerPickedUpWeaponOffHandCrafting : GameEventBase
+---@class GameEventPlayerEjectClip
+    ---@field holding_ammo integer
+---@class GameEventPlayerArmedGrenade : GameEventBase
+---@class GameEventPlayerHealthPenPrepare : GameEventBase
+---@class GameEventPlayerHealthPenRetract : GameEventBase
+---@class GameEventPlayerHealthPenUsed : GameEventBase
+---@class GameEventPlayerPistolEmptyClip : GameEventBase
+---@class GameEventPlayerPistolClipInserted : GameEventBase
+    ---@field bullet_count integer
+---@class GameEventPlayerPistolEmptyChamber : GameEventPlayerPistolClipInserted, GameEventBase
+    ---@field controller_type integer
+---@class GameEventPlayerPistolChamberedRound : GameEventBase
+---@class GameEventPlayerPistolSlideLock : GameEventBase
+---@class GameEventPlayerPistolBoughtLasersight : GameEventBase
+---@class GameEventPlayerPistolToggleLasersight : GameEventBase
+---@class GameEventPlayerPistolBoughtBurstfire : GameEventBase
+---@class GameEventPlayerPistolToggleBurstfire : GameEventBase
+---@class GameEventPlayerPistolPickedupChargedClip : GameEventBase
+---@class GameEventPlayerPistolArmedChargedClip : GameEventBase
+---@class GameEventPlayerPistolClipChargeEnded : GameEventBase
+---@class GameEventPlayerRetrievedBackpackClip : GameEventBase
+---@class GameEventPlayerDropAmmoInBackpack : GameEventBase
+    ---@field ammotype "Pistol"|"SMG1"|"Buckshot"|"AlyxGun"
+    ---@field ammoType "Pistol"|"SMG1"|"Buckshot"|"AlyxGun" # Sometimes for some reason the key is `ammoType` (capital T), seems to happen when shotgun shell is taken from backpack and put back.
+---@class GameEventPlayerDropResinInBackpack : GameEventBase
+---@class GameEventPlayerUsingHealthstation : GameEventBase
+---@class GameEventHealthStationOpen : GameEventBase -- doesn't have userid (if adding it)
+---@class GameEventPlayerLookingAtWristhud : GameEventBase
+---@class GameEventPlayerShotgunShellLoaded : GameEventBase
+    ---@field shellcount integer
+    ---@field hint_target integer # Entity ID that the hint should display at.
+---@class GameEventPlayerShotgunStateChanged : GameEventBase
+    ---@field shotgun_state integer
+    ---@field ammo_count integer
+    ---@field hint_target integer # Entity ID that the hint should display at.
+---@class GameEventPlayerShotgunUpgradeGrenadeLauncherState : GameEventBase
+    ---@field state integer
+    ---@field hint_target integer # Entity ID that the hint should display at.
+---@class GameEventPlayerShotgunAutoloaderState : GameEventBase
+    ---@field state integer
+    ---@field hint_target integer # Entity ID that the hint should display at.
+---@class GameEventPlayerShotgunAutoloaderShellsAdded : GameEventBase
+    ---@field shellcount integer
+    ---@field hint_target integer # Entity ID that the hint should display at.
+---@class GameEventPlayerShotgunUpgradeQuickfire : GameEventBase
+---@class GameEventPlayerShotgunIsReady : GameEventBase
+---@class GameEventPlayerShotgunOpen : GameEventBase
+---@class GameEventPlayerShotgunLoadedShells : GameEventBase
+---@class GameEventPlayerShotgunUpgradeGrenadeLong : GameEventBase
+---@class GameEventPlayerRapidfireCapsuleChamberEmpty : GameEventBase
+    ---@field hint_target integer
+---@class GameEventPlayerRapidfireCycledCapsule : GameEventBase
+---@class GameEventPlayerRapidfireMagazineEmpty : GameEventBase
+---@class GameEventPlayerRapidfireOpenedCasing : GameEventBase
+---@class GameEventPlayerRapidfireClosedCasing : GameEventBase
+---@class GameEventPlayerRapidfireInsertedCapsuleInChamber : GameEventBase
+---@class GameEventPlayerRapidfireInsertedCapsuleInMagazine : GameEventBase
+    ---@field num_capsules_in_magazine integer
+---@class GameEventPlayerRapidfireUpgradeSelectorCanUse : GameEventBase
+---@class GameEventPlayerRapidfireUpgradeSelectorUsed : GameEventBase
+---@class GameEventPlayerRapidfireUpgradeCanCharge : GameEventBase
+---@class GameEventPlayerRapidfireUpgradeCanNotCharge : GameEventBase
+---@class GameEventPlayerRapidfireUpgradeFullyCharged : GameEventBase
+---@class GameEventPlayerRapidfireUpgradeNotFullyCharged : GameEventBase
+---@class GameEventPlayerRapidfireUpgradeFired : GameEventBase
+---@class GameEventPlayerRapidfireEnergyBallCanCharge : GameEventBase
+---@class GameEventPlayerRapidfireEnergyBallFullyCharged : GameEventBase
+---@class GameEventPlayerRapidfireEnergyBallNotFullyCharged : GameEventBase
+---@class GameEventPlayerRapidfireEnergyBallCanPickUp : GameEventBase
+    ---@field hint_target integer
+---@class GameEventPlayerRapidfireEnergyBallPickedUp : GameEventBase
+---@class GameEventPlayerRapidfireStunGrenadeReady : GameEventBase
+---@class GameEventPlayerRapidfireStunGrenadeNotReady : GameEventBase
+---@class GameEventPlayerRapidfireStunGrenadePickedUp : GameEventBase
+---@class GameEventPlayerRapidfireExplodeButtonReady : GameEventBase
+---@class GameEventPlayerRapidfireExplodeButtonNotReady : GameEventBase
+---@class GameEventPlayerRapidfireExplodeButtonPressed : GameEventBase
+---@class GameEventGameSaved : GameEventBase -- doesn't have userid (if adding it)
+---@class GameEventPlayerAttemptedInvalidStorage : GameEventBase
+    ---@field vr_tip_attachment integer
+---@class GameEventPlayerAttemptedInvalidPistolClipStorage : GameEventBase
+    ---@field vr_tip_attachment integer
+---@class GameEventOpenedWeaponSwitch : GameEventBase
+---@class GAME_EVENT_PLAYER_STARTED_2H_LEVITATE : GameEventBase
+---@class GameEventPlayerStoredItemInItemholder : GameEventBase
+    ---@field item string
+    ---@field item_name string
+---@class GameEventPlayerRemovedItemFromItemholder : GameEventBase
+    ---@field item string
+    ---@field vr_tip_attachment integer
+---@class GameEventPlayerPickedUpFlashlight : GameEventBase
+---@class GameEventPlayerPickedUpFlashlightSingleController : GameEventBase
+    ---@field entindex integer
+---@class GameEventPlayerAttachedFlashlight : GameEventBase
+---@class GameEventTwoHandPistolGrabStart : GameEventBase
+---@class GameEventTwoHandPistolGrabEnd : GameEventBase
+---@class GameEventTwoHandRapidfireGrabStart : GameEventBase
+---@class GameEventTwoHandRapidfireGrabEnd : GameEventBase
+---@class GameEventTwoHandShotgunGrabStart : GameEventBase
+---@class GameEventTwoHandShotgunGrabEnd : GameEventBase
+---@class GameEventHealthPenTeachStorage : GameEventBase
+    ---@field vr_tip_attachment integer
+    ---@field hint_target integer # Entity ID that the hint should display at for single controller mode.
+---@class GameEventHealthVialTeachStorage : GameEventBase
+    ---@field vr_tip_attachment integer
+    ---@field hint_target integer # Entity ID that the hint should display at for single controller mode.
+---@class GameEventPlayerOpenedGameMenu : GameEventBase
+---@class GameEventPlayerClosedGameMenu : GameEventBase
+---@class GameEventPlayerPickedupStorableClip : GameEventBase
+    ---@field vr_tip_attachment integer
+    ---@field otherhand_vr_tip_attachment integer
+---@class GameEventPlayerPickedupInsertableClip : GameEventBase
+    ---@field vr_tip_attachment integer
+    ---@field otherhand_vr_tip_attachment integer
+---@class GameEventPlayerCoveredMouth : GameEventBase
+---@class GameEventPlayerUpgradeWeapon : GameEventBase
+    ---@field num_upgrades integer
+---@class GameEventSoldierKilledByGastankExplosion : GameEventBase -- doesn't have userid (if adding it)
+---@class GameEventChargerKilledWhileShieldUp : GameEventBase -- doesn't have userid (if adding it)
+---@class GameEventStealXenGrenade : GameEventBase -- doesn't have userid (if adding it)
+---@class GameEventTripmineHackStarted : GameEventBase
+---@class GameEventTripmineHacked : GameEventBase
+---@class GameEventPrimaryHandChanged : GameEventBase
+    ---@field is_primary_left number # 0 = right handed, 1 = left handed
+---@class GameEventCloseToBlindzombie : GameEventBase
+---@class GameEventPlayerGrabbedByBarnacle : GameEventBase
+---@class GameEventPlayerReleasedByBarnacle : GameEventBase
+---@class GameEventSingleControllerModeChanged : GameEventBase
+    ---@field is_single_controller_mode boolean
+    ---@field is_primary_left boolean
+---@class GameEventMovementHandChanged : GameEventBase
+    ---@field movement_is_primary_hand boolean
+---@class GameEventNpcRagdollCreated : GameEventBase -- doesn't have userid (if adding it)
+    ---@field npc_entindex integer
+    ---@field ragdoll_entindex integer
+---@class GameEventFriendlyNpcSpawned : GameEventBase -- doesn't have userid (if adding it)
+    ---@field npc_entindex integer
+    ---@field npc_is_friendly boolean
+---@class GameEventCombineTankMovedByPlayer : GameEventBase
+    ---@field entindex integer
+---@class GameEventChangeLevelActivated : GameEventBase -- doesn't have userid (if adding it)
+    ---@field map_name string
+    ---@field landmark_name string
+    ---@field landmark_height number
+    ---@field landmark_yaw number
+---@class GameEventSaveGameLoaded : GameEventBase -- doesn't have userid (if adding it)
+    ---@field sub_directory string
+---@class GameEventPlayerQuickTurned : GameEventBase
+    ---@field map_name string
+---@class GameEventGameOptionChanged : GameEventBase
+    ---@field game_option_name string
+    ---@field game_option_value string
+    ---@field map_name string
+---@class GameEventBarnacleGrabbedZombie : GameEventBase -- doesn't have userid (if adding it)
+---@class GameEventBarnacleGrabbedGrenade : GameEventBase -- doesn't have userid (if adding it)
+---@class GameEventBarnacleKilledByGrenade : GameEventBase -- doesn't have userid (if adding it)
+---@class GameEventZombieKilledByGrenade : GameEventBase -- doesn't have userid (if adding it)
+---@class GameEventPlayerContinuousJumpFinish : GameEventBase
+---@class GameEventPlayerContinuousMantleFinish : GameEventBase
+---@class GameEventPlayerCrouchToggleFinish : GameEventBase
+---@class GameEventPlayerStandToggleFinish : GameEventBase
+---@class GameEventPlayerGrabbedLadder : GameEventBase
+---@class GameEventCommentaryStarted : GameEventBase
+    ---@field title string
+    ---@field speaker string
+    ---@field nodeid integer
+    ---@field nodeidmax integer
+    ---@field start_time number
+    ---@field end_time number
+    ---@field transitioned integer
+---@class GameEventCommentaryStopped : GameEventBase
+    ---@field nodeid integer
+---@class GameEventVrControllerHintCreate : GameEventBase
+    ---@field hint_name string # What to name the hint. Referenced against instructor for the proper lesson.
+    ---@field hint_dominant_hand boolean # True for dominant hand, false for off hand.
+
+---Send once a server starts 
+---@class GameEventServerSpawn  
+    ---@field hostname string public host name
+    ---@field address string hostame, IP or DNS name
+    ---@field port number server port
+    ---@field game string game dir
+    ---@field mapname string map name
+    ---@field addonname string addon name
+    ---@field maxplayers number max players
+    ---@field os string WIN32, LINUX
+    ---@field dedicated boolean true if dedicated server
+    ---@field password boolean true if password protected
+---Server is about to be shut down 
+---@class GameEventServerPreShutdown
+    ---@field reason string reason why server is about to be shut down
+---Server shut down
+---@class GameEventServerShutdown
+    ---@field reason string reason why server was shut down
+---A generic server message
+---@class GameEventServerMessage
+    ---@field text string the message text
+---A server console var has changed
+---@class GameEventServerCvar
+    ---@field cvarname string cvar name, eg "mp_roudtime"
+    ---@field cvarvalue string new cvar value
+---
+---@class GameEventServerAddban
+    ---@field name string player name
+    ---@field userid number user ID on server
+    ---@field networkid string player network (i.e. steam) id
+    ---@field ip string IP address
+    ---@field duration string length of the ban
+    ---@field by string banned by...
+    ---@field kicked boolean whether the player was also kicked
+---
+---@class GameEventServerRemoveban
+    ---@field networkid string player network (i.e. steam) id
+    ---@field ip string IP address
+    ---@field by string removed by...
+---
+---@class GameEventPlayerActivate
+    ---@field userid number user ID on server
+---Player has sent final message in the connection sequence
+---@class GameEventPlayerConnectFull
+    ---@field userid number user ID on server
+    ---@field index number player slot (entity index-1)
+    ---@field PlayerID number
+---
+---@class GameEventPlayerSay
+    ---@field userid number user ID on server
+    ---@field text string the say text
+---
+---@class GameEventPlayerFullUpdate
+    ---@field userid number user ID on server
+    ---@field count number Number of this full update
+---A new client connected
+---@class GameEventPlayerConnect
+    ---@field name string player name
+    ---@field index number player slot(entity index-1)
+    ---@field userid number user ID on server (unique on server)
+    ---@field networkid string player network (i.e steam) id
+    ---@field address string ip:port
+    ---@field bot boolean
+---A client was disconnected
+---@class GameEventPlayerDisconnect
+    ---@field userid number user ID on server (unique on server)
+    ---@field reason string see networkdisconnect enum protobuf
+    ---@field name string player name
+    ---@field networkid string player network (i.e steam) id
+    ---@field PlayerID number
+---A player changed his name
+---@class GameEventPlayerInfo
+    ---@field name string player name
+    ---@field index number player slot (entity index-1)
+    ---@field userid number iser ID on server (unique on server)
+    ---@field networkid string player network (i.e steam) id
+    ---@field bot boolean true if player is a AI bot
+---Player spawned in game
+---@class GameEventPlayerSpawn
+    ---@field userid number user ID on server
+---Player change his team
+--You can receive this on the client before the local player has updated the team field locally
+---@class GameEventPlayerTeam
+    ---@field userid number user ID on server (unique on server)
+    ---@field team number team id
+    ---@field oldteam number old team id
+    ---@field disconnect boolean team change because player disconnects
+    ---@field autoteam boolean true if the player was auto assigned to the team
+    ---@field silent boolean if true wont print the team join messages
+    ---@field name string
+    ---@field isbot boolean
+---Sent only on the client for the local player - happens only after the local players team variable has been updated
+---@class GameEventLocalPlayerTeam
+---
+---@class GameEventPlayerChangename
+    ---@field userid number user ID on server
+    ---@field oldname string players old (current) name
+    ---@field newname string players new name
+---A player changed his class
+---@class GameEventPlayerClass
+    ---@field userid number user ID on server
+    ---@field class string new player class / model
+---Players scores changed
+---@class GameEventPlayerScore
+    ---@field userid number user ID on server
+    ---@field kills number \# of kills
+    ---@field deaths number \# of deaths
+    ---@field score number total game score
+---
+---@class GameEventPlayerHurt
+    ---@field userid number player index who was hurt
+    ---@field attacker number player index who attacked
+    ---@field health number remaining health points
+---Player shoot his weapon
+---@class GameEventPlayerShoot
+    ---@field userid number user ID on server
+    ---@field weapon number weapon ID
+    ---@field mode number weapon mode
+---A public player chat
+---@class GameEventPlayerChat
+    ---@field teamonly boolean true if team only chat
+    ---@field userid number chatting player
+    ---@field playerid number chatting player ID
+    ---@field text string chat text
+---Emits a sound to everyone on a team
+---@class GameEventTeamplayBroadcastAudio
+    ---@field team number unique team id
+    ---@field sound string name of the sound to emit
+---
+---@class GameEventFinaleStart
+    ---@field rushes number
+---
+---@class GameEventPlayerStatsUpdated
+    ---@field forceupload boolean
+---Fired when achievements/stats are downloaded from Steam or XBox Live
+---@class GameEventUserDataDownloaded
+---
+---@class GameEventRagdollDissolved
+    ---@field entindex number
+---Info about team
+---@class GameEventTeamInfo
+    ---@field teamid number unique team id
+    ---@field teamname string team name eg "Team Blue"
+---Team score changed
+---@class GameEventTeamScore
+    ---@field teamid number team id
+    ---@field score number total team score
+--[[
+    HLVR specific events
+]]
+---A specitator/player is a cameraman
+---@class GameEventHltvCameraman
+    ---@field index number camera man entity index
+---Shot of a single entity
+---@class GameEventHltvChase
+    ---@field target1 number primary traget index
+    ---@field target2 number secondary traget index or 0
+    ---@field distance number camera distance
+    ---@field theta number view angle horizontal
+    ---@field phi number view angle vertical
+    ---@field intertia number camera intertia
+    ---@field ineye number diretcor suggests to show ineye
+---A camera ranking
+---@class GameEventHltvRankCamera
+    ---@field index number fixed camera index
+    ---@field rank number ranking, how interesting is this camera view
+    ---@field target number best/closest target entity
+---An entity ranking
+---@class GameEventHltvRankEntity
+    ---@field index number entity index
+    ---@field rank number ranking, how interesting is this entity to view
+    ---@field target number best/closest target entity
+---Show from fixed view
+---@class GameEventHltvFixed
+    ---@field posx number camera position in world
+    ---@field posy number
+    ---@field posz number
+    ---@field theta number camera angles
+    ---@field offset number
+    ---@field fov number
+    ---@field target number follow this entity or 0
+---A HLTV message send by moderators
+---@class GameEventHltvMessage
+    ---@field text string
+---General HLTV status
+---@class GameEventHltvStatus
+    ---@field clients number number of HLTV spectators
+    ---@field slots number number HLTV slots
+    ---@field proxies number number of HLTV proxies
+    ---@field master string dispatch master IP:port
+---
+---@class GameEventHltvTitle
+    ---@field text string
+---A HLTV chat msg sent by spectators
+---@class GameEventHltvChat
+    ---@field text string
+---
+---@class GameEventHltvVersioninfo
+    ---@field version number
+---
+---@class GameEventDemoStart
+    ---@field local unknown
+    ---@field dota_combatlog_list unknown CSVCMsgList_GameEvents that are combat log events
+    ---@field dota_hero_chase_list unknown CSVCMsgList_GameEvents
+    ---@field dota_pick_hero_list unknown CSVCMsgList_GameEvents
+---
+---@class GameEventDemoStop
+---
+---@class GameEventDemoSkip
+    ---@field local unknown
+    ---@field playback_tick number current playback tick
+    ---@field skipto_tick number tick we're going to
+    ---@field user_message_list unknown CSVCMsgList_UserMessages
+    ---@field dota_hero_chase_list unknown CSVCMsgList_GameEvents
+---
+---@class GameEventMapShutdown
+---
+---@class GameEventMapTransition
+---
+---@class GameEventHostnameChanged
+    ---@field hostname string
+---
+---@class GameEventDifficultyChanged
+    ---@field newDifficulty number
+    ---@field oldDifficulty number
+    ---@field strDifficulty string new difficulty as string
+---A message send by game logic to everyone
+---@class GameEventGameMessage
+    ---@field target number 0 = console, 1 = HUD
+    ---@field text string the message text
+---Send when new map is completely loaded
+---@class GameEventGameNewmap
+    ---@field mapname string map name
+    ---@field transition boolean true if this is a transition from one map to another
+---
+---@class GameEventRoundStart
+    ---@field timelimit number round time limit in seconds
+    ---@field fraglimit number frag limit in seconds
+    ---@field objective string round objective
+---
+---@class GameEventRoundEnd
+    ---@field winner number winner team/user i
+    ---@field reason number reson why team won
+    ---@field message string end round message
+    ---@field time number
+---
+---@class GameEventRoundStartPreEntity
+---
+---@class GameEventRoundStartPostNav
+---
+---@class GameEventRoundFreezeEnd
+---Round restart
+---@class GameEventTeamplayRoundStart
+    ---@field full_reset boolean is this a full reset of the map
+---A game event, name may be 32 characters long
+---@class GameEventPlayerDeath
+    ---@field userid number user ID who died
+    ---@field attacker number user ID who killed
+---
+---@class GameEventPlayerFootstep
+    ---@field userid number
+---
+---@class GameEventPlayerHintmessage
+    ---@field hintmessage string localizable string of a hint
+---
+---@class GameEventBreakBreakable
+    ---@field entindex number
+    ---@field userid number
+    ---@field material number BREAK_GLASS, BREAK_WOOD, etc
+---
+---@class GameEventBreakDrop
+    ---@field entindex number
+    ---@field userid number
+    ---@field player_held boolean
+    ---@field player_thrown boolean
+    ---@field player_dropped boolean
+---
+---@class GameEventEntityKilled
+    ---@field entindex_killed number
+    ---@field entindex_attacker number
+    ---@field entindex_inflictor number
+    ---@field damagebits number
+---
+---@class GameEventDoorOpen
+    ---@field userid  number Who opened the door
+    ---@field checkpoint boolean Is the door a checkpoint door
+    ---@field closed boolean Was the door closed when it started opening?
+---
+---@class GameEventDoorClose
+    ---@field userid number Who closed the door
+    ---@field checkpoint boolean Is the door a checkpoint door
+---
+---@class GameEventDoorUnlocked
+    ---@field userid number Who opened the door
+    ---@field checkpoint boolean Is the door a checkpoint door
+--[[
+    Client side VoteController talking to HUD
+]]
+---
+---@class GameEventVoteStarted
+    ---@field issue string
+    ---@field param1 string
+    ---@field votedata string
+    ---@field team number
+    ---@field initiator number entity id of the player who initiated the vote
+    ---@field reliable 1 this event is reliable
+---
+---@class GameEventVoteFailed
+    ---@field team number
+    ---@field reliable 1 this event is reliable
+---
+---@class GameEventVotePassed
+    ---@field details string
+    ---@field param1 string
+    ---@field team number
+    ---@field reliable 1 this event is reliable
+---
+---@class GameEventVoteChanged
+    ---@field yesVotes number
+    ---@field noVotes number
+    ---@field potentialVotes number
+---
+---@class GameEventVoteCastYes
+    ---@field team number
+    ---@field entityid number entity id of the voter
+---
+---@class GameEventVoteCastNo
+    ---@field team number
+    ---@field entityid number entity id of the voter
+---
+---@class GameEventAchievementEvent
+    ---@field achievement_name string non-localized name of achievement
+    ---@field cur_val number \# of steps toward achievement
+    ---@field max_val number total # of steps in achievement
+---
+---@class GameEventAchievementEarned
+    ---@field player number entindex of the player
+    ---@field achievement number achievement ID
+---Used for a notification message when an achievement fails to write
+---@class GameEventAchievementWriteFailed
+---
+---@class GameEventBonusUpdated
+    ---@field numadvanced number
+    ---@field numbronze number
+    ---@field numsilver number
+    ---@field numgold number
+---
+---@class GameEventSpecTargetUpdated
+---
+---@class GameEventEntityVisible
+    ---@field userid number The player who sees the entity
+    ---@field subject number Entindex of the entity they see
+    ---@field classname string Classname of the entity they see
+    ---@field entityname string name of the entity they see
+---The player pressed use but a use entity wasn't found
+---@class GameEventPlayerUseMiss
+    ---@field userid number userid of user
+---
+---@class GameEventGameinstructorDraw
+---
+---@class GameEventGameinstructorNodraw
+---
+---@class GameEventFlareIgniteNpc
+    ---@field entindex number entity ignited
+---
+---@class GameEventHelicopterGrenadePuntMiss
+---
+---@class GameEventPhysgunPickup
+    ---@field entindex number entity picked up
+--[[
+    Economy events
+]]
+---
+---@class GameEventInventoryUpdated
+    ---@field itemdef number
+    ---@field itemid number
+---
+---@class GameEventCartUpdated
+---
+---@class GameEventStorePricesheetUpdated
+---
+---@class GameEventItemSchemaInitialized
+---
+---@class GameEventDropRateModified
+---
+---@class GameEventEventTicketModified
+---
+---@class GameEventGcConnected
+--[[
+    Instructor / Hint Events
+]]
+---
+---@class GameEventInstructorStartLesson
+    ---@field userid number The player who this lesson is intended for
+    ---@field hint_name string Name of the lesson to start. Must match instructor_lesson.txt
+    ---@field hint_target number entity id that the hint should display at. Leave empty if controller target
+    ---@field vr_movement_type number
+    ---@field vr_single_controller boolean
+    ---@field vr_controller_type number
+---
+---@class GameEventInstructorCloseLesson
+    ---@field userid number The player who this lesson is intended for
+    ---@field hint_name string Name of the lesson to start. Must match instructor_lesson.txt
+---Create a hint using data supplied entirely by the server/map. Intended for hints to smooth playtests before content is ready to make the hint unneccessary. NOT INTENDED AS A SHIPPABLE CRUTCH
+---@class GameEventInstructorServerHintCreate
+    ---@field userid number user ID of the player that triggered the hint
+    ---@field hint_entindex number entity id of the env_instructor_hint that fired the event
+    ---@field hint_name string what to name the hint. For referencing it again later (e.g. a kill command for the hint instead of a timeout)
+    ---@field hint_replace_key string type name so that message of the same type will replace each other
+    ---@field hint_target number entity id that the hint should display at
+    ---@field hint_activator_userid number userid id of the activator
+    ---@field hint_timeout number how long in seconds until the hint automatically times out, 0 = never
+    ---@field hint_icon_onscreen string the hint icon to use when the hint is onscreen. e.g. "icon_alert_red"
+    ---@field hint_icon_offscreen string the hint icon to use when the hint is offscreen. e.g. "icon_alert"
+    ---@field hint_caption string the hint caption. e.g. "#ThisIsDangerous"
+    ---@field hint_activator_caption string the hint caption that only the activator sees e.g. "#YouPushedItGood"
+    ---@field hint_color string the hint color in "r,g,b" format where each component is 0-255
+    ---@field hint_icon_offset number how far on the z axis to offset the hint from entity origin
+    ---@field hint_range number range before the hint is culled
+    ---@field hint_flag number hint flags
+    ---@field hint_binding string bindings to use when use_binding is the onscreen icon
+    ---@field hint_allow_nodraw_target boolean if false, the hint will dissappear if the target entity is invisible
+    ---@field hint_nooffscreen boolean if true, the hint will not show when outside the player view
+    ---@field hint_forcecaption boolean if true, the hint caption will show even if the hint is occluded
+    ---@field hint_local_player_only boolean if true, only the local player will see the hint
+    ---@field hint_start_sound string Game sound to play
+    ---@field hint_layoutfile string Path for Panorama layout file
+    ---@field hint_vr_panel_type number Attachment type for the Panorama panel
+    ---@field hint_vr_height_offset number Height offset for attached panels
+    ---@field hint_vr_offset_x number offset for attached panels
+    ---@field hint_vr_offset_y number offset for attached panels
+    ---@field hint_vr_offset_z number offset for attached panels
+---Destroys a server/map created hint
+---@class GameEventInstructorServerHintStop
+    ---@field hint_name string The hint to stop. Will stop ALL hints with this name
+    ---@field hint_entindex number entity id of the env_instructor_hint that fired the event
+---
+---@class GameEventSetInstructorGroupEnabled
+    ---@field group string
+    ---@field enabled number
+---
+---@class GameEventClientsideLessonClosed
+    ---@field lesson_name string
+---
+---@class GameEventDynamicShadowLightChanged.

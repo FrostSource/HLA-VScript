@@ -1,0 +1,165 @@
+---@meta
+
+---@alias EntityHandle
+---| CBaseEntity
+---| CEntityInstance
+---| CBaseModelEntity
+---| CBasePlayer
+---| CHL2_Player
+---| CBaseAnimating
+---| CBaseFlex
+---| CBaseCombatCharacter
+---| CBodyComponent
+---| CAI_BaseNPC
+---| CBaseTrigger
+---| CEnvEntityMaker
+---| CInfoWorldLayer
+---| CLogicRelay
+---| CMarkupVolumeTagged
+---| CEnvProjectedTexture
+---| CPhysicsProp
+---| CSceneEntity
+---| CPointClientUIWorldPanel
+---| CPointTemplate
+---| CPointWorldText
+---| CPropHMDAvatar
+---| CPropVRHand
+
+---
+---Entity handle for the current script attached to an entity.
+---
+---This variable exists for all entities.
+---
+---@type EntityHandle
+thisEntity = nil
+
+---@alias ScriptScope table
+
+---
+---Opvar names used in HLVR.
+---
+---@alias HLVROpvarNames
+---| "skylight_proximity_array"
+---| "skylight_invert_scalar_array"
+---| "hotel_sub_basement_proximity_array"
+---| "large_room_addin_array"
+---| "small_room_invert_scalar_array"
+---| "hotel_small_room_proximity_array"
+---| "xen_proximity_array"
+
+---
+---Table of time values returned by [LocalTime](lua://LocalTime).
+---
+---@class LocalTimeTable
+---@field Hours number
+---@field Minutes number
+---@field Seconds number
+
+
+---
+---Table passed into function which were called through Hammer via CallScriptFunction
+---
+---@class IOParams
+---@field activator EntityHandle # The !activator entity.
+---@field caller EntityHandle # The !caller entity.
+
+---
+---Table passed into the OnTakeDamage hook.
+---
+---@class OnTakeDamageTable
+---@field inflictor EntityHandle # The inflictor entity which caused the damage, e.g. An explosive barrel.
+---@field attacker EntityHandle # The attacker entity which caused the damage to occur, e.g. The player that shot the barrel.
+---@field damage_direction Vector # 
+---@field damage_position Vector # The world position where the damage occured.
+---@field damage_force Vector # The amount of force the damage caused.
+---@field damage integer # The damage value.
+
+---
+---Base values that exist in all trace types.
+---
+---@class TraceTableBase
+---@field startpos Vector # Global vector where to start the trace.
+---@field endpos Vector # Global vector where to end the trace.
+---@field pos Vector? # Global vector where the trace hit.
+---@field fraction number? # Fraction from the start to end where the trace hit.
+---@field hit boolean? # Whether the trace hit something. Always present.
+---@field startsolid boolean? # Whether the trace started inside the entity. This parameter is set to nil if it is false.
+---@field normal Vector? # Global normal vector of the surface hit.
+
+---
+---Values that exist for TraceCollideable.
+---
+---@class TraceTableCollideable : TraceTableBase
+---@field ent EntityHandle # Entity to trace against.
+---@field mins Vector # (Optional) Minimum coordinates of the bounding box. Local to the entity.
+---@field maxs Vector # (Optional) Maximum coordinates of the bounding box. Local to the entity.
+
+---
+---Values that exist for TraceHull.
+---
+---@class TraceTableHull : TraceTableBase
+---@field min Vector # Minimum extents of the bounding box.
+---@field max Vector # Maximum extents of the bounding box.
+---@field mask integer? # Collision type bitmask.
+---@field ignore EntityHandle? # Entity to ignore when tracing.
+---@field enthit EntityHandle? # Handle of the entity the trace hit.
+
+---
+---Values that exist for TraceLine.
+---
+---@class TraceTableLine : TraceTableBase
+---@field mask integer? # Collision type bitmask.
+---@field ignore EntityHandle? # Entity to ignore when tracing.
+---@field enthit EntityHandle? # Handle of the entity the trace hit.
+
+---
+---Values which can exist in a table after passing it to CBaseEntity:GatherCriteria().
+---
+---Not all fields will exist for all entities.
+---
+---@class CriteriaTable
+---@field playerhealth number # Health of the player.
+---@field map string # Name of the map file.
+---@field in_combat 0|1 # If the NPC is in combat.
+---@field current_crafting_currency number # Amount of resin player has.
+---@field playeractivity string # Unknown if this is applicable in Alyx, returns `"ACT_RESET"`.
+---@field skill.cfg number # Unsure if this changes. Appears to always be `1`.
+---@field playerhealthfrac number # The health fraction (health/maxhealth).
+---@field episodic number # Always `1`.
+---@field playerweapon string|"none" # Name of the weapon used in non-vr.
+---@field gordon_precriminal number # Always `0`.
+---@field health number # Health of the entity, can be negative.
+---@field playerspeed number # In VR this appears to be `0` while moving/teleporting, and quickly climbs to ~continous_speed*2 while stationary.
+---@field primaryhand_active_attachment "hand_use_controller"|"hlvr_weapon_energygun"|"hlvr_weapon_shotgun"|"hlvr_weapon_rapidfire"|"hlvr_multitool" # Classname of the weapon in the player's hand.
+---@field time_since_combat number # Seconds since last in combat.
+---@field name string # Same as CEntityInstance:GetName().
+---@field healthfrac number # The health fraction (health/maxhealth).
+---@field classname string # Same as CBaseEntity:GetClassname().
+---@field randomnum integer # Random integer [0-100].
+---@field npcstate "[NPCState::None]"|"[NPCState::Idle]"|"[NPCState::Alert]"|"[NPCState::Combat]" # Current NPC state.
+---@field speed number # Current speed of the entity.
+---@field num_squad_members number # Number of living NPCs in the squad.
+---@field activity string # Unknown if this changes. Returns `"ACT_IDLE"`.
+---@field weapon string # Name of the weapon the NPC is holding.
+---@field lost_squad_members number # Squad members which have been killed while this entity is alive.
+---@field distancetoplayer number # Distance to player in inches (NPC head to player head?).
+---@field has_officer 0|1 # If this squad has at least one officer.
+---@field timesincecombat number|999999|-1 # Seconds since the NPC was last in combat. 999999=never, -1=currently in combat.
+---@field distancetoenemy number|16384 # Distance to the current enemy that can be seen. 16384 if can't be seen.
+---@field combine_class "default"|"officer"|"charger"|"suppressor" # Combine class name (`default` == grunt).
+---@field seenbyplayer 0|1 # If the NPC is mostly visible to the player.
+---@field seeplayer 0|1 # If the NPC can see the player.
+---@field timesinceseenplayer number|-1 # Seconds since the NPC last saw the player. This is never 0 while the player is in view. `-1` if never seen.
+---@field enemy string|nil # Classname of the current enemy, nil if no enemy.
+
+---
+---Quaternions are broken in Half Life Alyx and cannot be instantiated.
+---
+---@deprecated
+---@class Quaternion
+
+---
+---Vector2D is broken in Half Life Alyx and cannot be instantiated.
+---
+---@deprecated
+---@class Vector2D
