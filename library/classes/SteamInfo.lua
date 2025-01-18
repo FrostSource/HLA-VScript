@@ -7,7 +7,7 @@
 SteamInfo = {}
 
 ---
----Is the script connected to the public Steam universe. 
+---Is the script connected to the public Steam universe.
 ---
 ---@return boolean
 function SteamInfo:IsPublicUniverse() end

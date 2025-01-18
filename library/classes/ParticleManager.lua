@@ -70,7 +70,16 @@ function ParticleManager:SetParticleControl(particleID, controlIndex, controlDat
 ---@param attachment string|nil # The model attachment to use. Use `nil` for no attachment instead of blank string to avoid warnings.
 ---@param origin Vector # The origin offset of the attachment
 ---@param unknown boolean
-function ParticleManager:SetParticleControlEnt(particleID, controlIndex, entity, attachType, attachment, origin, unknown) end
+function ParticleManager:SetParticleControlEnt(
+	particleID,
+	controlIndex,
+	entity,
+	attachType,
+	attachment,
+	origin,
+	unknown
+)
+end
 
 ---
 ---Set the forward direction for a control point on a particle effect.

@@ -21,9 +21,9 @@ function vlua.clear(t) end
 ---Implements Squirrel three way compare operator ( <=> ).
 ---
 --- < -1
---- 
+---
 --- == 0
---- 
+---
 --- \>  1
 ---
 ---@param a number # The left value
@@ -104,7 +104,7 @@ function vlua.find(str, substr, startIndex) end
 ---`startIndex` is inclusive and `endIndex` is exclusive.
 ---
 ---@param tbl table # Table to slice
----@param startIndex integer # Index to start slicing from, can be negative 
+---@param startIndex integer # Index to start slicing from, can be negative
 ---@param endIndex integer # Index to stop slicing at, can be negative
 ---@return table # New table containing the sliced values
 ----@overload fun(str: string, startIndex: integer, endIndex: integer): string

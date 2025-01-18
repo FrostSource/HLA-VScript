@@ -72,11 +72,11 @@
 --#region Activation types
 
 ---Entity was activated for the first time.
-ACTIVATE_TYPE_INITIAL_CREATION    = 0
+ACTIVATE_TYPE_INITIAL_CREATION = 0
 ---Unknown when this is used.
 ACTIVATE_TYPE_DATAUPDATE_CREATION = 1
 ---Entity was activated during a game load.
-ACTIVATE_TYPE_ONRESTORE           = 2
+ACTIVATE_TYPE_ONRESTORE = 2
 
 ---Types of activation for the Activate() hook function.
 ---@alias ActivationType
@@ -88,37 +88,37 @@ ACTIVATE_TYPE_ONRESTORE           = 2
 
 --#region Damage types
 
-DMG_GENERIC                 =	0
-DMG_CRUSH                   =	1
-DMG_BULLET                  =	2
-DMG_SLASH                   =	4
-DMG_BURN                    =   8
-DMG_VEHICLE                 =	16
-DMG_FALL                    =	32
-DMG_BLAST                   =	64
-DMG_CLUB                    =	128
-DMG_SHOCK                   =	256
-DMG_SONIC                   =	512
-DMG_ENERGYBEAM              =	1024
-DMG_PREVENT_PHYSICS_FORCE   =	2048
-DMG_NEVERGIB                =	4096
-DMG_ALWAYSGIB               =	8192
-DMG_DROWN                   =	16384
-DMG_PARALYZE                =	32768
-DMG_NERVEGAS                =	65536
-DMG_POISON                  =	131072
-DMG_RADIATION               =	262144
-DMG_DROWNRECOVER            =	524288
-DMG_ACID                    =	1048576
-DMG_SLOWBURN                =	2097152
-DMG_REMOVENORAGDOLL         =	4194304
-DMG_PHYSGUN                 =	8388608
-DMG_PLASMA                  =	16777216
-DMG_AIRBOAT                 =	33554432
-DMG_DISSOLVE                =	67108864
-DMG_BLAST_SURFACE           =	134217728
-DMG_DIRECT                  =   268435456
-DMG_BUCKSHOT                =   536870912 -- Shotgun damage. Gibs headcrabs.
+DMG_GENERIC = 0
+DMG_CRUSH = 1
+DMG_BULLET = 2
+DMG_SLASH = 4
+DMG_BURN = 8
+DMG_VEHICLE = 16
+DMG_FALL = 32
+DMG_BLAST = 64
+DMG_CLUB = 128
+DMG_SHOCK = 256
+DMG_SONIC = 512
+DMG_ENERGYBEAM = 1024
+DMG_PREVENT_PHYSICS_FORCE = 2048
+DMG_NEVERGIB = 4096
+DMG_ALWAYSGIB = 8192
+DMG_DROWN = 16384
+DMG_PARALYZE = 32768
+DMG_NERVEGAS = 65536
+DMG_POISON = 131072
+DMG_RADIATION = 262144
+DMG_DROWNRECOVER = 524288
+DMG_ACID = 1048576
+DMG_SLOWBURN = 2097152
+DMG_REMOVENORAGDOLL = 4194304
+DMG_PHYSGUN = 8388608
+DMG_PLASMA = 16777216
+DMG_AIRBOAT = 33554432
+DMG_DISSOLVE = 67108864
+DMG_BLAST_SURFACE = 134217728
+DMG_DIRECT = 268435456
+DMG_BUCKSHOT = 536870912 -- Shotgun damage. Gibs headcrabs.
 
 ---@alias DamageInfoTypes
 ---|`DMG_GENERIC` # DMG_GENERIC
@@ -160,22 +160,22 @@ DMG_BUCKSHOT                =   536870912 -- Shotgun damage. Gibs headcrabs.
 -- Commented out names don't exist
 
 --PATTACH_INVALID             = -1
-PATTACH_ABSORIGIN           = 0
-PATTACH_ABSORIGIN_FOLLOW    = 1
-PATTACH_CUSTOMORIGIN        = 2
+PATTACH_ABSORIGIN = 0
+PATTACH_ABSORIGIN_FOLLOW = 1
+PATTACH_CUSTOMORIGIN = 2
 PATTACH_CUSTOMORIGIN_FOLLOW = 3
-PATTACH_POINT               = 4
-PATTACH_POINT_FOLLOW        = 5
-PATTACH_EYES_FOLLOW         = 6
-PATTACH_OVERHEAD_FOLLOW     = 7
-PATTACH_WORLDORIGIN         = 8
-PATTACH_ROOTBONE_FOLLOW     = 9
+PATTACH_POINT = 4
+PATTACH_POINT_FOLLOW = 5
+PATTACH_EYES_FOLLOW = 6
+PATTACH_OVERHEAD_FOLLOW = 7
+PATTACH_WORLDORIGIN = 8
+PATTACH_ROOTBONE_FOLLOW = 9
 PATTACH_RENDERORIGIN_FOLLOW = 10
 --PATTACH_MAIN_VIEW           = 11
 --PATTACH_WATERWAKE           = 12
 --PATTACH_CENTER_FOLLOW       = 13
 --PATTACH_CUSTOM_GAME_STATE_1 = 14
-MAX_PATTACH_TYPES           = 15
+MAX_PATTACH_TYPES = 15
 
 ---@alias ParticleAttachmentType
 ---|-1 # PATTACH_INVALID
@@ -223,43 +223,43 @@ MAX_PATTACH_TYPES           = 15
 -- CVar flags
 
 ---No flags
-FCVAR_NONE                       = 0
+FCVAR_NONE = 0
 ---If this is set, the convar will become anonymous and won't show up in the 'find' results.
-FCVAR_UNREGISTERED               = 1
+FCVAR_UNREGISTERED = 1
 ---Hidden in released products. Flag is removed automatically if ALLOW_DEVELOPMENT_CVARS is defined.
-FCVAR_DEVELOPMENTONLY            = 2
+FCVAR_DEVELOPMENTONLY = 2
 ---Hidden. Doesn't appear in find or autocomplete. Like DEVELOPMENTONLY, but can't be compiled out.
-FCVAR_HIDDEN                     = 16
+FCVAR_HIDDEN = 16
 ---Makes the ConVar value hidden from all clients ( For example sv_password )
-FCVAR_PROTECTED                  = 32
+FCVAR_PROTECTED = 32
 ---Executing the command or changing the ConVar is only allowed in singleplayer
-FCVAR_SPONLY                     = 64
+FCVAR_SPONLY = 64
 ---Save the ConVar value into client.vdf
-FCVAR_ARCHIVE                    = 128
+FCVAR_ARCHIVE = 128
 ---For serverside ConVars, notifies all players with blue chat text when the value gets changed
-FCVAR_NOTIFY                     = 256
+FCVAR_NOTIFY = 256
 ---For clientside commands, sends the value to the server
-FCVAR_USERINFO                   = 512
+FCVAR_USERINFO = 512
 ---Forces the ConVar to only have printable characters ( No control characters )
-FCVAR_PRINTABLEONLY              = 1024
+FCVAR_PRINTABLEONLY = 1024
 ---Don't log the ConVar changes to console/log files/users
-FCVAR_UNLOGGED                   = 2048
+FCVAR_UNLOGGED = 2048
 ---Tells the engine to never print this variable as a string. This is used for variables which may contain control characters.
-FCVAR_NEVER_AS_STRING            = 4096
+FCVAR_NEVER_AS_STRING = 4096
 ---For serverside ConVars, it will send its value to all clients. The ConVar with the same name must also exist on the client!
-FCVAR_REPLICATED                 = 8192
+FCVAR_REPLICATED = 8192
 ---Requires sv_cheats to be enabled to change the ConVar or run the command
-FCVAR_CHEAT                      = 16384
+FCVAR_CHEAT = 16384
 ---Unknown split screen flag
-FCVAR_SS                         = 32768
+FCVAR_SS = 32768
 ---Force the ConVar to be recorded by demo recordings.
-FCVAR_DEMO                       = 65536
+FCVAR_DEMO = 65536
 ---Opposite of FCVAR_DEMO, ensures the ConVar is not recorded in demos
-FCVAR_DONTRECORD                 = 131072
+FCVAR_DONTRECORD = 131072
 ---Makes the ConVar not changeable while connected to a server or in singleplayer
-FCVAR_NOT_CONNECTED              = 4194304
+FCVAR_NOT_CONNECTED = 4194304
 ---Unknown
-FCVAR_VCONSOLE_SET_FOCUS         = 1073741824
+FCVAR_VCONSOLE_SET_FOCUS = 1073741824
 
 ---@alias CVarFlags
 ---|`FCVAR_NONE` # No flags
@@ -287,11 +287,11 @@ FCVAR_VCONSOLE_SET_FOCUS         = 1073741824
 --#region Unknown globals
 
 -- Found through brute force.
-BURST   = 5
-EMPTY   = 0
-TAUNT   = 14
-PRESIM  = 0
-RELOAD  = 6
+BURST = 5
+EMPTY = 0
+TAUNT = 14
+PRESIM = 0
+RELOAD = 6
 ACT_ARM = 71
 ACT_FLY = 25
 ACT_HOP = 30

@@ -37,7 +37,7 @@ function Dynamic_Wrap(scope, name) end
 ---
 ---Returns the number of degrees difference between two yaw angles
 ---
----The result is positive if the shortest rotation from `angle1` to `angle2` is counterclockwise (left), 
+---The result is positive if the shortest rotation from `angle1` to `angle2` is counterclockwise (left),
 ---and negative if the shortest rotation is clockwise (right).
 ---
 ---@param angle1 number # First angle

@@ -55,7 +55,6 @@ thisEntity = nil
 ---@field Minutes number
 ---@field Seconds number
 
-
 ---
 ---Table passed into function which were called through Hammer via CallScriptFunction
 ---
@@ -69,7 +68,7 @@ thisEntity = nil
 ---@class OnTakeDamageTable
 ---@field inflictor EntityHandle # The inflictor entity which caused the damage, e.g. An explosive barrel.
 ---@field attacker EntityHandle # The attacker entity which caused the damage to occur, e.g. The player that shot the barrel.
----@field damage_direction Vector # 
+---@field damage_direction Vector #
 ---@field damage_position Vector # The world position where the damage occured.
 ---@field damage_force Vector # The amount of force the damage caused.
 ---@field damage integer # The damage value.

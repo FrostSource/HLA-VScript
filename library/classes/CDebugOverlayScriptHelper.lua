@@ -44,7 +44,19 @@ function debugoverlay:Box(min, max, red, green, blue, alpha, noDepthTest, second
 ---@param bool_9 boolean
 ---@param float_10 number
 ---@deprecated # Quaternions do not exist.
-function debugoverlay:BoxAngles(Vector_1, Vector_2, Vector_3, Quaternion_4, int_5, int_6, int_7, int_8, bool_9, float_10) end
+function debugoverlay:BoxAngles(
+	Vector_1,
+	Vector_2,
+	Vector_3,
+	Quaternion_4,
+	int_5,
+	int_6,
+	int_7,
+	int_8,
+	bool_9,
+	float_10
+)
+end
 
 ---
 ---Draws a capsule. Specify base in world space.
@@ -60,7 +72,19 @@ function debugoverlay:BoxAngles(Vector_1, Vector_2, Vector_3, Quaternion_4, int_
 ---@param bool_9 integer
 ---@param float_10 number
 ---@deprecated # Quaternions do not exist.
-function debugoverlay:Capsule(Vector_1, Quaternion_2, float_3, float_4, int_5, int_6, int_7, int_8, bool_9, float_10) end
+function debugoverlay:Capsule(
+	Vector_1,
+	Quaternion_2,
+	float_3,
+	float_4,
+	int_5,
+	int_6,
+	int_7,
+	int_8,
+	bool_9,
+	float_10
+)
+end
 
 ---
 ---Draws a circle. Specify center in world space.
@@ -159,7 +183,19 @@ function debugoverlay:Cross3DOriented(Vector_1, Quaternion_2, float_3, int_4, in
 ---@param alpha integer # The alpha value of the shape (0-255)
 ---@param noDepthTest boolean # Whether or not to disable depth testing (will render on top of everything)
 ---@param seconds number # The lifetime of the shape, -1 means forever
-function debugoverlay:DrawTickMarkedLine(startPos, endPos, distanceBetweenTicks, tickHighlightOffset, red, green, blue, alpha, noDepthTest, seconds) end
+function debugoverlay:DrawTickMarkedLine(
+	startPos,
+	endPos,
+	distanceBetweenTicks,
+	tickHighlightOffset,
+	red,
+	green,
+	blue,
+	alpha,
+	noDepthTest,
+	seconds
+)
+end
 
 ---
 ---Draws the attachments of the entity with each axis and label
@@ -313,7 +349,19 @@ function debugoverlay:RemoveAllInScope(scopeName) end
 ---@param alpha integer # The alpha value of the shape (0-255)
 ---@param noDepthTest boolean # Whether or not to disable depth testing (will render on top of everything)
 ---@param seconds number # The lifetime of the shape, -1 means forever
-function debugoverlay:SolidCone(startPos, direction, spreadAngle, length, red, green, blue, alpha, noDepthTest, seconds) end
+function debugoverlay:SolidCone(
+	startPos,
+	direction,
+	spreadAngle,
+	length,
+	red,
+	green,
+	blue,
+	alpha,
+	noDepthTest,
+	seconds
+)
+end
 
 ---
 ---Draws a wireframe sphere.
@@ -342,7 +390,19 @@ function debugoverlay:Sphere(position, radius, red, green, blue, alpha, noDepthT
 ---@param int_9 integer
 ---@param float_10 number
 ---@deprecated # Quaternions do not exist.
-function debugoverlay:SweptBox(Vector_1, Vector_2, Vector_3, Vector_4, Quaternion_5, int_6, int_7, int_8, int_9, float_10) end
+function debugoverlay:SweptBox(
+	Vector_1,
+	Vector_2,
+	Vector_3,
+	Vector_4,
+	Quaternion_5,
+	int_6,
+	int_7,
+	int_8,
+	int_9,
+	float_10
+)
+end
 
 ---
 ---Draws 2D text in the world.
@@ -374,7 +434,19 @@ function debugoverlay:Text(position, lineOffset, text, unknown, red, green, blue
 ---@param Vector2D_9 Vector2D
 ---@param float_10 number
 ---@deprecated # Vector2D does not exist.
-function debugoverlay:Texture(string_1, Vector2D_2, Vector2D_3, int_4, int_5, int_6, int_7, Vector2D_8, Vector2D_9, float_10) end
+function debugoverlay:Texture(
+	string_1,
+	Vector2D_2,
+	Vector2D_3,
+	int_4,
+	int_5,
+	int_6,
+	int_7,
+	Vector2D_8,
+	Vector2D_9,
+	float_10
+)
+end
 
 ---
 ---Draws a filled triangle.
