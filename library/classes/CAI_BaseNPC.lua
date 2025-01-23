@@ -34,5 +34,8 @@ function CAI_BaseNPC:NpcNavGetGoalPosition() end
 ---
 ---Returns true if NPC has a goal and path.
 ---
+---This will not immediately return `true` after calling [NpcForceGoPosition](lua://CAI_BaseNPC.NpcForceGoPosition).
+---It takes a moment for the NPC to register as having a goal.
+---
 ---@return boolean
 function CAI_BaseNPC:NpcNavGoalActive() end
