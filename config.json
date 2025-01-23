@@ -1,6 +1,6 @@
 {
     "name": "Half Life Alyx VScript API",
-    "words": [ "require[%s%(\"']+MAA[%)\"']" ],
+    "words": [ "thisEntity" ],
     "files": ["scripts/vscripts/*.lua"],
     "settings": {
         "Lua.runtime.version" : "LuaJIT",
