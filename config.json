@@ -1,16 +1,7 @@
 {
-    // Name of the addon
     "name": "Half Life Alyx VScript API",
-
-    // Lua string patterns to look for in a workspace.
-    // If detected, this addon will be recommended to enable
     "words": [ "require[%s%(\"']+MAA[%)\"']" ],
-
-    // Lua string patterns to look for in filenames.
-    // If detected, this addon will be recommended to enable
     "files": ["scripts/vscripts/*.lua"],
-
-    // List of settings to apply when this addon is enabled
     "settings": {
         "Lua.runtime.version" : "LuaJIT",
         "Lua.runtime.builtin": {
@@ -27,7 +18,6 @@
             "bit32": "disable",
             "jit": "disable"
         },
-        // Required for thisEntity to work
         "Lua.type.weakUnionCheck": true,
         "Lua.type.weakNilCheck": true,
         "Lua.diagnostics.disable": [
